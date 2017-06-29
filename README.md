@@ -7,6 +7,8 @@ The original simulated batch data are from this repository [https://kuleuven.app
 Jan Van Impe, Geert Gins, __An extensive reference dataset for fault detection and identification in batch processes__,  
 *Chemometrics and Intelligent Laboratory Systems*, Volume 148, 15 November 2015, Pages 20–31.
 
+The overall project is described in [this presentation](/docs/LegacyDataAnalyticsDemo.pptx) which is covered in [this short video of the talk](https://youtu.be/HGm170ZoskM).
+
 # Machine Learning
 ## Data Download
 
