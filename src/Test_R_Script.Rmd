@@ -1,0 +1,84 @@
+---
+title: "Test Model Consumption"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(xgboost)
+library(Matrix)
+library(ggplot2)
+```
+
+
+# Testing Model Consumption
+
+This notebook tests consumption of the XGBoost model created by `src/Batch_Data_Training.ipynb`.
+
+
+Load the Model:
+```{r}
+xgbmodel <- xgb.load('../0002.model')
+```
+
+Bring in some data for testing from the sample data created by `src/Batch_Data_Explore_and_prep.ipynb`.
+
+```{r}
+df0 <- read.csv("../data/base1run6.csv")
+df1 <- read.csv("../data/fault11run0.csv")
+head(df0)
+
+```
+
+## Model Testing
+
+I now test the model to see how many of the original points for each dataset it correctly classifies.
+
+
+First: the normal dataset:
+```{r}
+
+# Make the data a matrix
+m1 <-data.matrix(df0[,-1])
+
+p1<- predict(xgbmodel,m1)
+# Shift the dimensionality based on the model having 4 classes
+dim(p1)<- c(4,nrow(df0))
+# Transpose and get the first column (probability of a good run.)
+results<-data.frame(result=t(p1)[,1])
+
+h <- hist(results$result, plot=FALSE)
+h$counts=h$counts/sum(h$counts)
+plot(h)
+```
+This does a good job of predicting this data set as being normal.
+
+
+Now testing the fault dataset:
+```{r}
+# Make the data a matrix
+m1 <-data.matrix(df1[,-1])
+
+p1<- predict(xgbmodel,m1)
+# Shift the dimensionality based on the model having 4 classes
+dim(p1)<- c(4,nrow(df1))
+# Transpose and get the first column (probability of a good run.)
+faultresults<-data.frame(result=t(p1)[,1])
+h <- hist(faultresults$result, plot=FALSE)
+h$counts=h$counts/sum(h$counts)
+plot(h)
+```
+
+This dataset is predicted as being abnormal about half of the time, enough to flag an operator that something is not correct.
+
+```{r}
+results$val <- "Normal"
+faultresults$val<-"Fault"
+allresults <- rbind(results,faultresults)
+allresults$RunType <- factor(allresults$val)
+ggplot(allresults) + geom_histogram(aes(result,..density..,fill=RunType),position="dodge")
+ggsave("../docs/testresults.png")
+```
+
+
+
