@@ -31,7 +31,7 @@ It also outputs a figure showing sample data from four of the normal runs: `/doc
 
 ## Model Training
 
-I used the XGBoost model trained on a sample of the data [`Batch_Data_Training`](src/Batch_Data_Training.ipynb). The model was saved in binary format in the root folder: `0002.model`. The training progress was copied into a separate file [`TrainingRecord`](/src/TrainingRecord.xlsx) and then [plotted to visulaize the progress.](/docs/xgboost_training_record.png)
+I used the XGBoost model trained on a sample of the data [`Batch_Data_Training`](/src/Batch_Data_Training.ipynb). The model was saved in binary format in the root folder: `0002.model`. The training progress was copied into a separate file [`TrainingRecord`](/src/TrainingRecord.xlsx) and then [plotted to visulaize the progress.](/docs/xgboost_training_record.png)
 
 ## Model Testing
 
